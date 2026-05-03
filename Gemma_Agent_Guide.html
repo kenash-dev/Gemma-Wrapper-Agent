@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemma Agent — Installation &amp; Usage Guide</title>
+    <style>
+        @page { margin: 2cm; size: A4; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7; color: #1a1a1a;
+            max-width: 820px; margin: 0 auto; padding: 40px 30px; background: #fff;
+        }
+        h1 { color: #1a3a5c; font-size: 28px; border-bottom: 3px solid #1a3a5c; padding-bottom: 10px; margin-top: 0; }
+        h2 { color: #2668a3; font-size: 22px; margin-top: 38px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+        h3 { color: #333; font-size: 17px; margin-top: 25px; }
+        .cover { text-align: center; padding: 80px 0 60px; page-break-after: always; }
+        .cover h1 { font-size: 38px; border: none; margin-bottom: 10px; }
+        .cover .subtitle { font-size: 18px; color: #555; margin-bottom: 40px; }
+        .cover .meta { font-size: 14px; color: #777; margin-top: 60px; }
+        code {
+            background: #f4f4f8; padding: 2px 6px; border-radius: 3px;
+            font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+            font-size: 14px; color: #c7254e;
+        }
+        pre {
+            background: #1e1e2e; color: #cdd6f4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+            font-size: 13px; line-height: 1.5; margin: 15px 0;
+        }
+        pre code { background: none; color: inherit; padding: 0; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 14px; }
+        th, td { border: 1px solid #ddd; padding: 10px 14px; text-align: left; }
+        th { background: #f0f4f8; font-weight: 600; color: #1a3a5c; }
+        tr:nth-child(even) { background: #f9fafb; }
+        .note {
+            background: #e8f4fd; border-left: 4px solid #2668a3;
+            padding: 12px 16px; margin: 15px 0; border-radius: 0 6px 6px 0;
+        }
+        .warning {
+            background: #fff3e0; border-left: 4px solid #e65100;
+            padding: 12px 16px; margin: 15px 0; border-radius: 0 6px 6px 0;
+        }
+        .danger {
+            background: #fde8e8; border-left: 4px solid #c62828;
+            padding: 12px 16px; margin: 15px 0; border-radius: 0 6px 6px 0;
+        }
+        .steps { counter-reset: step-counter; }
+        .step {
+            counter-increment: step-counter; padding-left: 44px;
+            position: relative; margin-bottom: 22px;
+        }
+        .step::before {
+            content: counter(step-counter); position: absolute; left: 0; top: 0;
+            width: 30px; height: 30px; background: #1a3a5c; color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 14px;
+        }
+        ul, ol { padding-left: 24px; }
+        li { margin-bottom: 6px; }
+        .toc { background: #f8f9fa; padding: 20px 30px; border-radius: 8px; margin: 20px 0; }
+        .toc a { color: #2668a3; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { padding: 4px 0; }
+        .toc li::before { content: "▸ "; color: #1a3a5c; }
+        .page-break { page-break-before: always; }
+        .arch-box {
+            background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px;
+            padding: 20px; margin: 15px 0; font-family: monospace; font-size: 13px;
+            white-space: pre; line-height: 1.4;
+        }
+        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0; }
+        .feature-card {
+            background: #f8f9fa; border: 1px solid #e0e0e0;
+            border-radius: 8px; padding: 15px;
+        }
+        .feature-card h4 { margin: 0 0 8px; color: #1a3a5c; }
+        .feature-card p { margin: 0; font-size: 14px; color: #555; }
+    </style>
+</head>
+<body>
+
+<!-- ================================================================ -->
+<!-- COVER PAGE                                                       -->
+<!-- ================================================================ -->
+<div class="cover">
+    <h1>Gemma Agent</h1>
+    <p class="subtitle">Installation &amp; Usage Guide</p>
+    <p style="font-size:16px; color:#444;">
+        A local AI agent framework that wraps Google Gemma<br>
+        running in Docker into an autonomous coding assistant<br>
+        with tool use, planning, memory, and safe command execution
+    </p>
+    <p class="meta">
+        Version 0.1.0<br>
+        Date: May 2026<br>
+        Platform: Windows / macOS / Linux
+    </p>
+</div>
+
+<!-- ================================================================ -->
+<!-- TABLE OF CONTENTS                                                -->
+<!-- ================================================================ -->
+<h2>Table of Contents</h2>
+<div class="toc">
+    <ul>
+        <li><a href="#overview">1. Overview &amp; Architecture</a></li>
+        <li><a href="#prerequisites">2. Prerequisites</a></li>
+        <li><a href="#gemma-docker">3. Running Gemma in Docker</a></li>
+        <li><a href="#install">4. Installing the Agent</a></li>
+        <li><a href="#config">5. Configuration</a></li>
+        <li><a href="#usage-modes">6. Usage Modes</a></li>
+        <li><a href="#tools">7. Available Tools</a></li>
+        <li><a href="#react-loop">8. How the Agent Works (ReAct Loop)</a></li>
+        <li><a href="#repl-commands">9. REPL Commands</a></li>
+        <li><a href="#examples">10. Usage Examples</a></li>
+        <li><a href="#safety">11. Safety &amp; Sandboxing</a></li>
+        <li><a href="#troubleshooting">12. Troubleshooting</a></li>
+        <li><a href="#advanced">13. Advanced: Adding Custom Tools</a></li>
+        <li><a href="#cost">14. Resource &amp; Performance Notes</a></li>
+        <li><a href="#desktop-ui">15. Desktop UI Application</a></li>
+    </ul>
+</div>
+
+<!-- ================================================================ -->
+<!-- 1. OVERVIEW                                                      -->
+<!-- ================================================================ -->
+<h2 id="overview" class="page-break">1. Overview &amp; Architecture</h2>
+
+<p>Gemma Agent turns a locally running Google Gemma model into an <strong>autonomous AI agent</strong> that can reason, plan, read/write files, execute commands, search the web, and run Python code — all from your terminal.</p>
+
+<div class="feature-grid">
+    <div class="feature-card">
+        <h4>ReAct Reasoning Loop</h4>
+        <p>Think → Act → Observe → Repeat. The agent reasons step-by-step and uses tools to complete complex tasks.</p>
+    </div>
+    <div class="feature-card">
+        <h4>10 Built-in Tools</h4>
+        <p>File I/O, shell commands, Python execution, web search, URL fetch, grep, and semantic search.</p>
+    </div>
+    <div class="feature-card">
+        <h4>Memory Management</h4>
+        <p>Auto-compresses conversation history to fit Gemma's context window. Working memory scratchpad included.</p>
+    </div>
+    <div class="feature-card">
+        <h4>Safety Sandbox</h4>
+        <p>Blocks dangerous commands, restricts paths to your workspace, confirms destructive actions.</p>
+    </div>
+</div>
+
+<h3>Project Structure</h3>
+<div class="arch-box">gemma-agent/
+├── main.py                 # CLI entry (REPL + single-task mode)
+├── agent_loop.py           # Core ReAct loop
+├── llm_client.py           # OpenAI-compatible client for Gemma
+├── tool_registry.py        # Tool registration &amp; dispatch
+├── memory.py               # Conversation history + compression
+├── planner.py              # Task decomposition
+├── sandbox.py              # Safety: command &amp; path validation
+├── config.py               # Settings via environment variables
+├── requirements.txt
+├── tools/
+│   ├── file_ops.py         # read, write, edit, list, search, grep
+│   ├── shell.py            # Shell command execution
+│   ├── code_exec.py        # Python code execution
+│   ├── web_search.py       # DuckDuckGo + URL fetch
+│   └── knowledge.py        # RAG (optional, needs extra deps)
+└── prompts/
+    ├── system.txt           # Agent system prompt
+    ├── planner.txt          # Planning prompt
+    └── tool_format.txt      # Tool format reference</div>
+
+<!-- ================================================================ -->
+<!-- 2. PREREQUISITES                                                 -->
+<!-- ================================================================ -->
+<h2 id="prerequisites">2. Prerequisites</h2>
+
+<table>
+    <tr><th>Requirement</th><th>Minimum Version</th><th>How to Verify</th></tr>
+    <tr><td>Python</td><td>3.10+</td><td><code>python --version</code></td></tr>
+    <tr><td>pip</td><td>22+</td><td><code>pip --version</code></td></tr>
+    <tr><td>Docker</td><td>20+</td><td><code>docker --version</code></td></tr>
+    <tr><td>RAM</td><td>16 GB (27B model)</td><td>—</td></tr>
+    <tr><td>GPU (optional)</td><td>NVIDIA with 12+ GB VRAM</td><td><code>nvidia-smi</code></td></tr>
+</table>
+
+<div class="note">
+    <strong>No GPU?</strong> Gemma models can run on CPU via Ollama, but expect slower responses (10–60 seconds per turn). The 9B model is recommended for CPU-only setups.
+</div>
+
+<!-- ================================================================ -->
+<!-- 3. RUNNING GEMMA IN DOCKER                                       -->
+<!-- ================================================================ -->
+<h2 id="gemma-docker" class="page-break">3. Running Gemma in Docker</h2>
+
+<p>You need Gemma served behind an <strong>OpenAI-compatible API</strong>. Here are the three most common approaches:</p>
+
+<h3>Option A: Ollama (Recommended — Easiest)</h3>
+<pre><code># Pull and run Ollama
+docker run -d --name ollama -p 11434:11434 \
+    -v ollama_data:/root/.ollama \
+    ollama/ollama
+
+# Pull the Gemma model
+docker exec ollama ollama pull gemma2:27b
+
+# Verify it's running
+curl http://localhost:11434/v1/models</code></pre>
+
+<p>API endpoint: <code>http://localhost:11434/v1</code><br>
+Model name: <code>gemma2:27b</code> (or <code>gemma2:9b</code> for smaller setups)</p>
+
+<h3>Option B: vLLM (Best Performance with GPU)</h3>
+<pre><code>docker run -d --name gemma-vllm --gpus all \
+    -p 8000:8000 \
+    vllm/vllm-openai:latest \
+    --model google/gemma-2-27b-it \
+    --max-model-len 8192</code></pre>
+
+<p>API endpoint: <code>http://localhost:8000/v1</code><br>
+Model name: <code>google/gemma-2-27b-it</code></p>
+
+<h3>Option C: LocalAI (CPU-Optimized)</h3>
+<pre><code>docker run -d --name localai -p 8080:8080 \
+    -v localai_models:/models \
+    localai/localai:latest
+
+# Download Gemma via LocalAI's model gallery
+curl http://localhost:8080/models/apply \
+    -H "Content-Type: application/json" \
+    -d '{"url": "github:mudler/LocalAI/gallery/gemma-2-27b-it.yaml"}'</code></pre>
+
+<p>API endpoint: <code>http://localhost:8080/v1</code></p>
+
+<h3>Verify the Endpoint</h3>
+<pre><code># Test that your model responds
+curl http://localhost:11434/v1/chat/completions \
+    -H "Content-Type: application/json" \
+    -d '{
+        "model": "gemma2:27b",
+        "messages": [{"role": "user", "content": "Say hello"}],
+        "max_tokens": 50
+    }'</code></pre>
+<p>If you get a JSON response with a <code>choices</code> array, the endpoint is ready.</p>
+
+<!-- ================================================================ -->
+<!-- 4. INSTALLING THE AGENT                                          -->
+<!-- ================================================================ -->
+<h2 id="install">4. Installing the Agent</h2>
+
+<div class="steps">
+    <div class="step">
+        <strong>Navigate to the agent directory:</strong>
+        <pre><code>cd path\to\gemma-agent</code></pre>
+    </div>
+    <div class="step">
+        <strong>Install Python dependencies:</strong>
+        <pre><code>pip install -r requirements.txt</code></pre>
+        <p>This installs: <code>openai</code>, <code>rich</code>, <code>duckduckgo-search</code>, <code>beautifulsoup4</code>, <code>requests</code></p>
+    </div>
+    <div class="step">
+        <strong>(Optional) Install RAG dependencies:</strong>
+        <pre><code>pip install chromadb sentence-transformers</code></pre>
+        <p>Then uncomment <code>import tools.knowledge</code> in <code>main.py</code> to enable semantic search.</p>
+    </div>
+    <div class="step">
+        <strong>Verify the install:</strong>
+        <pre><code>python -c "from main import *; print('OK')"</code></pre>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- 5. CONFIGURATION                                                 -->
+<!-- ================================================================ -->
+<h2 id="config" class="page-break">5. Configuration</h2>
+
+<p>All settings are controlled via <strong>environment variables</strong> with sensible defaults:</p>
+
+<table>
+    <tr><th>Variable</th><th>Default</th><th>Description</th></tr>
+    <tr><td><code>GEMMA_BASE_URL</code></td><td><code>http://localhost:11434/v1</code></td><td>Gemma API endpoint</td></tr>
+    <tr><td><code>GEMMA_MODEL</code></td><td><code>gemma2:27b</code></td><td>Model name</td></tr>
+    <tr><td><code>AGENT_MAX_ITERATIONS</code></td><td><code>15</code></td><td>Max reasoning steps per task</td></tr>
+    <tr><td><code>AGENT_WORKSPACE</code></td><td><code>.</code> (current dir)</td><td>Restrict file access to this directory</td></tr>
+    <tr><td><code>AGENT_CONFIRM_WRITES</code></td><td><code>true</code></td><td>Ask before writing/deleting files</td></tr>
+    <tr><td><code>AGENT_TEMPERATURE</code></td><td><code>0.1</code></td><td>LLM temperature (lower = more deterministic)</td></tr>
+    <tr><td><code>AGENT_MAX_TOKENS</code></td><td><code>2048</code></td><td>Max output tokens per LLM call</td></tr>
+    <tr><td><code>AGENT_CONTEXT_BUDGET</code></td><td><code>6000</code></td><td>Token budget for conversation history</td></tr>
+</table>
+
+<h3>Setting Variables</h3>
+
+<p><strong>Windows (PowerShell):</strong></p>
+<pre><code>$env:GEMMA_BASE_URL = "http://localhost:11434/v1"
+$env:GEMMA_MODEL = "gemma2:9b"
+python main.py</code></pre>
+
+<p><strong>Linux / macOS (bash):</strong></p>
+<pre><code>export GEMMA_BASE_URL="http://localhost:11434/v1"
+export GEMMA_MODEL="gemma2:9b"
+python main.py</code></pre>
+
+<p><strong>Or use CLI flags</strong> (override env vars):</p>
+<pre><code>python main.py --base-url http://localhost:8000/v1 --model gemma2</code></pre>
+
+<!-- ================================================================ -->
+<!-- 6. USAGE MODES                                                   -->
+<!-- ================================================================ -->
+<h2 id="usage-modes">6. Usage Modes</h2>
+
+<h3>Mode 1: Interactive REPL</h3>
+<pre><code>python main.py</code></pre>
+<p>Starts an interactive session. You type messages, the agent reasons and acts.</p>
+<pre><code>╔══════════════════════════════════════════╗
+║         🤖  Gemma Agent  v0.1.0         ║
+║   Local AI Agent · Powered by Gemma     ║
+╚══════════════════════════════════════════╝
+
+You> Refactor utils.py to use dataclasses instead of dicts
+💭 I'll start by reading utils.py to understand the current structure...
+┌─ 🔧 Tool Call ────────────────────────┐
+│ read_file                              │
+│ {"path": "utils.py"}                   │
+└────────────────────────────────────────┘
+┌─ 📋 Observation ──────────────────────┐
+│ (file contents appear here)            │
+└────────────────────────────────────────┘
+💭 I can see three dict-based structures. I'll convert them...
+...</code></pre>
+
+<h3>Mode 2: Single Task</h3>
+<pre><code>python main.py "Create a FastAPI endpoint for user registration"</code></pre>
+<p>The agent executes the task and exits when done.</p>
+
+<h3>Mode 3: Workspace-Restricted</h3>
+<pre><code>python main.py --workspace ./my-project "Add unit tests for utils.py"</code></pre>
+<p>The agent can only read/write files inside <code>./my-project</code>.</p>
+
+<h3>Mode 4: Skip Confirmations</h3>
+<pre><code>python main.py --no-confirm "Set up the project structure"</code></pre>
+<p>Skips user confirmation prompts for file writes (use with caution).</p>
+
+<!-- ================================================================ -->
+<!-- 7. AVAILABLE TOOLS                                               -->
+<!-- ================================================================ -->
+<h2 id="tools" class="page-break">7. Available Tools</h2>
+
+<table>
+    <tr><th>Tool</th><th>Description</th><th>Key Parameters</th></tr>
+    <tr><td><code>read_file</code></td><td>Read file contents (up to 500 lines)</td><td><code>path</code></td></tr>
+    <tr><td><code>write_file</code></td><td>Create or overwrite a file</td><td><code>path</code>, <code>content</code></td></tr>
+    <tr><td><code>edit_file</code></td><td>Replace exact text in a file</td><td><code>path</code>, <code>old_text</code>, <code>new_text</code></td></tr>
+    <tr><td><code>list_directory</code></td><td>List files and folders</td><td><code>path</code></td></tr>
+    <tr><td><code>search_files</code></td><td>Glob pattern search</td><td><code>pattern</code>, <code>directory</code></td></tr>
+    <tr><td><code>grep</code></td><td>Search inside file contents</td><td><code>pattern</code>, <code>path</code>, <code>is_regex</code></td></tr>
+    <tr><td><code>run_command</code></td><td>Execute a shell command (30s timeout)</td><td><code>command</code>, <code>cwd</code></td></tr>
+    <tr><td><code>execute_python</code></td><td>Run Python code in subprocess</td><td><code>code</code></td></tr>
+    <tr><td><code>web_search</code></td><td>Search DuckDuckGo (top 5 results)</td><td><code>query</code></td></tr>
+    <tr><td><code>fetch_url</code></td><td>Fetch &amp; extract text from a URL</td><td><code>url</code></td></tr>
+</table>
+
+<h3>Optional Tools (require extra dependencies)</h3>
+<table>
+    <tr><th>Tool</th><th>Description</th><th>Extra Install</th></tr>
+    <tr><td><code>index_directory</code></td><td>Index files into a local vector store</td><td><code>chromadb</code>, <code>sentence-transformers</code></td></tr>
+    <tr><td><code>search_knowledge</code></td><td>Semantic search over indexed files</td><td>(same as above)</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<!-- 8. HOW THE AGENT WORKS                                           -->
+<!-- ================================================================ -->
+<h2 id="react-loop">8. How the Agent Works (ReAct Loop)</h2>
+
+<p>The agent follows the <strong>ReAct</strong> (Reason + Act) pattern. Each turn of the loop:</p>
+
+<div class="arch-box">User: "Add error handling to server.py"
+         │
+         ▼
+┌─ THOUGHT ──────────────────────────────┐
+│ I need to read server.py first to      │
+│ understand the current code.           │
+└────────────────────────────────────────┘
+         │
+         ▼
+┌─ ACTION ───────────────────────────────┐
+│ read_file({"path": "server.py"})       │
+└────────────────────────────────────────┘
+         │
+         ▼
+┌─ OBSERVATION ──────────────────────────┐
+│ (contents of server.py)                │
+└────────────────────────────────────────┘
+         │
+         ▼
+┌─ THOUGHT ──────────────────────────────┐
+│ I see three endpoints without try/     │
+│ except blocks. I'll add error handling │
+│ to each one.                           │
+└────────────────────────────────────────┘
+         │
+         ▼
+┌─ ACTION ───────────────────────────────┐
+│ edit_file({"path": "server.py", ...})  │
+└────────────────────────────────────────┘
+         │
+         ▼
+   ... (continues until done) ...
+         │
+         ▼
+┌─ ANSWER ───────────────────────────────┐
+│ I've added try/except blocks to all    │
+│ three endpoints with proper logging.   │
+└────────────────────────────────────────┘</div>
+
+<p>The loop runs up to <strong>15 iterations</strong> (configurable). If the model produces malformed output, it gets one retry with a format hint.</p>
+
+<!-- ================================================================ -->
+<!-- 9. REPL COMMANDS                                                 -->
+<!-- ================================================================ -->
+<h2 id="repl-commands">9. REPL Commands</h2>
+
+<p>In interactive mode, use these slash commands:</p>
+
+<table>
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>/plan</code></td><td>Show the current task plan with completed/pending steps</td></tr>
+    <tr><td><code>/memory</code></td><td>Show the agent's working memory scratchpad</td></tr>
+    <tr><td><code>/tools</code></td><td>List all registered tools with descriptions</td></tr>
+    <tr><td><code>/clear</code></td><td>Reset conversation history and working memory</td></tr>
+    <tr><td><code>/config</code></td><td>Show current configuration values</td></tr>
+    <tr><td><code>/help</code></td><td>Show help text</td></tr>
+    <tr><td><code>/quit</code></td><td>Exit the agent</td></tr>
+</table>
+
+<div class="note">
+    <strong>Tip:</strong> Press <code>Ctrl+C</code> to interrupt a running agent action without killing the session. The agent will stop the current loop and wait for new input.
+</div>
+
+<!-- ================================================================ -->
+<!-- 10. USAGE EXAMPLES                                               -->
+<!-- ================================================================ -->
+<h2 id="examples" class="page-break">10. Usage Examples</h2>
+
+<h3>Example 1: Explore and Understand a Codebase</h3>
+<pre><code>You> List all Python files and explain the project structure</code></pre>
+<p>The agent will use <code>search_files</code> and <code>read_file</code> to explore, then provide a summary.</p>
+
+<h3>Example 2: Refactor Code</h3>
+<pre><code>You> Refactor the database module to use connection pooling</code></pre>
+<p>The agent reads the file, identifies the pattern, edits it, and verifies.</p>
+
+<h3>Example 3: Generate Tests</h3>
+<pre><code>You> Write pytest unit tests for the auth module in tests/test_auth.py</code></pre>
+<p>The agent reads the source, generates tests, writes the file, and runs them.</p>
+
+<h3>Example 4: Debug a Problem</h3>
+<pre><code>You> The server crashes with "KeyError: user_id" when handling POST /login. Fix it.</code></pre>
+<p>The agent searches for the endpoint, reads the code, identifies the bug, and applies a fix.</p>
+
+<h3>Example 5: Research + Code</h3>
+<pre><code>You> Research the best Python JWT library and implement token auth for our Flask app</code></pre>
+<p>The agent uses <code>web_search</code> to research, then reads the app code and implements the solution.</p>
+
+<h3>Example 6: Run Commands</h3>
+<pre><code>You> Check which ports are in use and list any Python processes running</code></pre>
+<p>The agent runs shell commands like <code>netstat</code> and <code>tasklist</code>/<code>ps</code> and reports results.</p>
+
+<h3>Example 7: Single-Shot from CLI</h3>
+<pre><code>python main.py --workspace ./backend "Add input validation to all API endpoints"</code></pre>
+
+<!-- ================================================================ -->
+<!-- 11. SAFETY                                                       -->
+<!-- ================================================================ -->
+<h2 id="safety">11. Safety &amp; Sandboxing</h2>
+
+<h3>Command Blocking</h3>
+<p>The following command patterns are <strong>automatically blocked</strong> and will never execute:</p>
+<table>
+    <tr><th>Pattern</th><th>Reason</th></tr>
+    <tr><td><code>rm -rf /</code></td><td>Recursive root deletion</td></tr>
+    <tr><td><code>sudo</code></td><td>Privilege escalation</td></tr>
+    <tr><td><code>mkfs</code>, <code>format</code>, <code>dd</code></td><td>Disk formatting / raw writes</td></tr>
+    <tr><td><code>shutdown</code>, <code>reboot</code></td><td>System shutdown</td></tr>
+    <tr><td><code>curl|bash</code>, <code>wget|bash</code></td><td>Pipe-to-shell attacks</td></tr>
+    <tr><td><code>chmod 777</code></td><td>Overly permissive permissions</td></tr>
+    <tr><td><code>passwd</code></td><td>Password changes</td></tr>
+    <tr><td>Fork bomb patterns</td><td>System resource exhaustion</td></tr>
+</table>
+
+<h3>Confirmation Prompts</h3>
+<p>These actions trigger a <strong>Y/N confirmation</strong> before executing:</p>
+<ul>
+    <li><code>rm</code>, <code>del</code> — file/directory deletion</li>
+    <li><code>git push</code>, <code>git reset --hard</code> — destructive Git operations</li>
+    <li><code>pip install</code>, <code>npm install</code> — package installation</li>
+    <li><code>DROP TABLE</code>, <code>TRUNCATE</code> — database destructive ops</li>
+    <li>All file writes via <code>write_file</code> and <code>edit_file</code></li>
+</ul>
+
+<div class="warning">
+    <strong>Warning:</strong> Using <code>--no-confirm</code> disables all confirmation prompts. Only use this for trusted, well-tested tasks in isolated environments.
+</div>
+
+<h3>Path Restriction</h3>
+<p>The agent can only access files within the configured <strong>workspace directory</strong>. Any attempt to read, write, or navigate outside this directory is blocked.</p>
+<pre><code># Restrict to a specific project
+python main.py --workspace /home/user/projects/myapp</code></pre>
+
+<!-- ================================================================ -->
+<!-- 12. TROUBLESHOOTING                                              -->
+<!-- ================================================================ -->
+<h2 id="troubleshooting" class="page-break">12. Troubleshooting</h2>
+
+<h3>Connection Refused / Cannot Connect</h3>
+<pre><code># Check if the Docker container is running
+docker ps
+
+# Check if the API responds
+curl http://localhost:11434/v1/models
+
+# Check Docker logs
+docker logs ollama</code></pre>
+
+<h3>Model Not Found</h3>
+<pre><code># List available models in Ollama
+docker exec ollama ollama list
+
+# Pull the model if missing
+docker exec ollama ollama pull gemma2:27b</code></pre>
+
+<h3>Slow Responses</h3>
+<ul>
+    <li>Use a smaller model: <code>--model gemma2:9b</code></li>
+    <li>Ensure GPU passthrough is working: <code>docker run --gpus all ...</code></li>
+    <li>Check GPU memory: <code>nvidia-smi</code></li>
+    <li>Reduce <code>AGENT_MAX_TOKENS</code> to <code>1024</code></li>
+</ul>
+
+<h3>Agent Produces Malformed Output</h3>
+<ul>
+    <li>This is normal for smaller models — the agent auto-retries once with a format hint</li>
+    <li>If persistent, try a larger model (<code>27b</code> is better than <code>9b</code> at following formats)</li>
+    <li>Lower the temperature: <code>AGENT_TEMPERATURE=0.05</code></li>
+</ul>
+
+<h3>Out of Memory</h3>
+<ul>
+    <li>Switch to <code>gemma2:9b</code> (needs ~8 GB RAM / 6 GB VRAM)</li>
+    <li>Reduce context budget: <code>AGENT_CONTEXT_BUDGET=3000</code></li>
+    <li>Use <code>/clear</code> to reset conversation history</li>
+</ul>
+
+<h3>Import Errors</h3>
+<pre><code># Reinstall all deps
+pip install -r requirements.txt --force-reinstall
+
+# Verify
+python -c "from main import *; print('OK')"</code></pre>
+
+<!-- ================================================================ -->
+<!-- 13. ADDING CUSTOM TOOLS                                          -->
+<!-- ================================================================ -->
+<h2 id="advanced">13. Advanced: Adding Custom Tools</h2>
+
+<p>You can add your own tools by creating a new file in the <code>tools/</code> directory:</p>
+
+<pre><code># tools/my_tool.py
+from tool_registry import tool
+
+@tool(
+    name="my_custom_tool",
+    description="Does something useful",
+    parameters={
+        "input_text": {
+            "type": "string",
+            "description": "The input to process"
+        }
+    },
+)
+def my_custom_tool(input_text: str) -> str:
+    # Your logic here
+    result = input_text.upper()
+    return f"Processed: {result}"</code></pre>
+
+<p>Then register it in <code>main.py</code>:</p>
+<pre><code>import tools.my_tool  # noqa: F401</code></pre>
+
+<p>The agent will automatically see it in the system prompt and can call it during reasoning.</p>
+
+<!-- ================================================================ -->
+<!-- 14. PERFORMANCE                                                  -->
+<!-- ================================================================ -->
+<h2 id="cost">14. Resource &amp; Performance Notes</h2>
+
+<table>
+    <tr><th>Model</th><th>RAM Needed</th><th>GPU VRAM</th><th>Speed (tokens/sec, GPU)</th><th>Quality</th></tr>
+    <tr><td><code>gemma2:9b</code></td><td>~10 GB</td><td>~6 GB</td><td>~40 tok/s</td><td>Good for simple tasks</td></tr>
+    <tr><td><code>gemma2:27b</code></td><td>~20 GB</td><td>~16 GB</td><td>~15 tok/s</td><td>Best for agent use</td></tr>
+    <tr><td><code>gemma2:9b</code> (CPU)</td><td>~10 GB</td><td>—</td><td>~5 tok/s</td><td>Slow but works</td></tr>
+</table>
+
+<div class="note">
+    <strong>Cost:</strong> Everything runs locally — there are <strong>zero API costs</strong>. Your only expense is electricity ⚡
+</div>
+
+<h3>Tips for Best Results</h3>
+<ul>
+    <li><strong>Be specific</strong> — "Add input validation to the /login endpoint in server.py" works better than "fix security"</li>
+    <li><strong>Break large tasks</strong> — Ask for one thing at a time; the agent handles multi-step internally</li>
+    <li><strong>Use /clear</strong> — Reset between unrelated tasks to avoid context pollution</li>
+    <li><strong>Workspace flag</strong> — Always use <code>--workspace</code> to scope the agent's file access</li>
+    <li><strong>27B model</strong> — Use the 27B model for agent tasks; 9B struggles with the ReAct format</li>
+</ul>
+
+<!-- ================================================================ -->
+<!-- 15. DESKTOP UI                                                    -->
+<!-- ================================================================ -->
+<h2 id="desktop-ui" class="page-break">15. Desktop UI Application</h2>
+
+<p>In addition to the command-line REPL, Gemma Agent includes a <strong>full graphical desktop application</strong> built with Python's Tkinter. It provides the same agent capabilities with a modern dark-themed interface.</p>
+
+<h3>Launching the Desktop App</h3>
+<pre><code># Basic launch
+python desktop_app.py
+
+# With workspace restriction
+python desktop_app.py --workspace C:\Projects\my-app
+
+# With custom endpoint
+python desktop_app.py --base-url http://localhost:8000/v1 --model gemma2:27b</code></pre>
+
+<div class="note">
+    <strong>No extra dependencies required.</strong> The desktop UI uses Python's built-in <code>tkinter</code>, which ships with every standard Windows Python installation.
+</div>
+
+<h3>UI Layout</h3>
+<div class="arch-box">┌────────────────────────────────────────────────────────────────────┐
+│  🤖 Gemma Agent              [■ Stop]  [🗑 Clear]  [⚙ Settings]   │  ← Top Bar
+├──────────────────┬─────────────────────────────────────────────────┤
+│ CONNECTION       │                                                 │
+│ gemma2:27b       │   💭 Thought                                    │
+│ localhost:11434  │   I need to read the file first...              │
+│                  │                                                 │
+│ ─────────────── │   🔧 Tool Call                                   │
+│ TOOLS            │   read_file({"path": "main.py"})                │
+│ • read_file      │                                                 │
+│ • write_file     │   📋 Observation                                │
+│ • edit_file      │   (file contents...)                            │
+│ • list_directory │                                                 │
+│ • search_files   │   ✅ Agent                                      │
+│ • grep           │   I've completed the refactoring...             │
+│ • run_command    │                                                 │
+│ • execute_python │   ──────────────────────────────────            │
+│ • web_search     │                                                 │
+│ • fetch_url      │                                                 │
+│                  │                                                 │
+│ ─────────────── │                                                 │
+│ QUICK ACTIONS    │                                                 │
+│ [List files    ] │                                                 │
+│ [Explain code  ] ├─────────────────────────────────────────────────┤
+│ [Find bugs     ] │  Type a message... (Enter to send)    [Send ➤] │  ← Input
+│ [Generate tests] │                                                 │
+├──────────────────┴─────────────────────────────────────────────────┤
+│ • Ready                              Workspace: C:\Projects\myapp  │  ← Status Bar
+└────────────────────────────────────────────────────────────────────┘</div>
+
+<h3>Interface Components</h3>
+<table>
+    <tr><th>Component</th><th>Description</th></tr>
+    <tr><td><strong>Top Bar</strong></td><td>Application title, Stop button (interrupts running agent), Clear button (resets chat &amp; memory), Settings button</td></tr>
+    <tr><td><strong>Sidebar — Connection</strong></td><td>Shows the current model name and API endpoint</td></tr>
+    <tr><td><strong>Sidebar — Tools</strong></td><td>Lists all registered tools the agent can use</td></tr>
+    <tr><td><strong>Sidebar — Quick Actions</strong></td><td>One-click buttons for common tasks (list files, explain code, find bugs, generate tests)</td></tr>
+    <tr><td><strong>Chat Display</strong></td><td>Scrollable area showing the full conversation with colour-coded entries</td></tr>
+    <tr><td><strong>Input Area</strong></td><td>Multi-line text input. Press <code>Enter</code> to send, <code>Shift+Enter</code> for newline</td></tr>
+    <tr><td><strong>Status Bar</strong></td><td>Shows current agent status (Thinking, Done, Error) and workspace path</td></tr>
+</table>
+
+<h3>Colour Coding</h3>
+<table>
+    <tr><th>Element</th><th>Colour</th><th>Meaning</th></tr>
+    <tr><td>💭 Thought</td><td>Grey italic</td><td>Agent's internal reasoning</td></tr>
+    <tr><td>🔧 Tool Call</td><td>Yellow</td><td>Tool being invoked with arguments</td></tr>
+    <tr><td>📋 Observation</td><td>Blue</td><td>Tool output / result</td></tr>
+    <tr><td>✅ Answer</td><td>Green</td><td>Agent's final response</td></tr>
+    <tr><td>⚠ Error</td><td>Red</td><td>Errors or warnings</td></tr>
+    <tr><td>You</td><td>Teal</td><td>Your messages</td></tr>
+</table>
+
+<h3>Settings Dialog</h3>
+<p>Click <strong>⚙ Settings</strong> in the top bar to open the configuration panel:</p>
+<table>
+    <tr><th>Setting</th><th>Description</th></tr>
+    <tr><td>API Base URL</td><td>The endpoint where Gemma is served (e.g., <code>http://localhost:11434/v1</code>)</td></tr>
+    <tr><td>Model Name</td><td>Which model to use (e.g., <code>gemma2:27b</code>, <code>gemma2:9b</code>)</td></tr>
+    <tr><td>Max Iterations</td><td>Maximum reasoning steps per task (default: 15)</td></tr>
+    <tr><td>Temperature</td><td>Creativity level (lower = more deterministic, default: 0.1)</td></tr>
+    <tr><td>Max Tokens</td><td>Maximum output tokens per LLM call (default: 2048)</td></tr>
+    <tr><td>Context Budget</td><td>Token budget for conversation history (default: 6000)</td></tr>
+    <tr><td>Confirm destructive actions</td><td>Checkbox — whether to show a popup before file writes, deletes, etc.</td></tr>
+    <tr><td>Workspace</td><td>Directory the agent is allowed to access (with Browse button)</td></tr>
+</table>
+<p>Click <strong>Save &amp; Connect</strong> to apply settings and reconnect to the model endpoint.</p>
+
+<h3>Confirmation Dialogs</h3>
+<p>When <em>Confirm destructive actions</em> is enabled (default), the agent will show a <strong>Yes/No popup</strong> before:</p>
+<ul>
+    <li>Writing or editing any file</li>
+    <li>Running commands that match destructive patterns (rm, git push, pip install, etc.)</li>
+</ul>
+<p>Click <strong>Yes</strong> to allow the action, or <strong>No</strong> to cancel it. The agent will acknowledge the cancellation and may try an alternative approach.</p>
+
+<h3>Stop &amp; Clear</h3>
+<ul>
+    <li><strong>■ Stop</strong> — Immediately interrupts the running agent loop. The agent stops after the current step. Useful if it's heading in the wrong direction.</li>
+    <li><strong>🗑 Clear</strong> — Resets the entire conversation history and working memory. Use between unrelated tasks.</li>
+</ul>
+
+<h3>Quick Actions</h3>
+<p>The sidebar includes one-click buttons for common tasks:</p>
+<table>
+    <tr><th>Button</th><th>What It Does</th></tr>
+    <tr><td>List project files</td><td>Lists all files in the workspace and describes the structure</td></tr>
+    <tr><td>Explain codebase</td><td>Reads key files and explains what the project does</td></tr>
+    <tr><td>Find bugs</td><td>Analyzes code for potential bugs and suggests fixes</td></tr>
+    <tr><td>Generate tests</td><td>Generates unit tests for the main modules</td></tr>
+</table>
+<p>Clicking a quick action automatically sends the corresponding prompt to the agent.</p>
+
+<h3>Desktop App File Structure</h3>
+<pre><code>gemma-agent/
+├── desktop_app.py            # Entry point (run this)
+└── ui/
+    ├── __init__.py
+    ├── theme.py              # Dark theme: all colours, fonts, dimensions
+    ├── agent_worker.py       # Background thread running the ReAct loop
+    ├── settings_dialog.py    # Settings modal window
+    └── main_window.py        # Main window with all panels</code></pre>
+
+<h3>Desktop vs CLI — When to Use Which</h3>
+<table>
+    <tr><th>Feature</th><th>CLI (<code>python main.py</code>)</th><th>Desktop (<code>python desktop_app.py</code>)</th></tr>
+    <tr><td>Interface</td><td>Terminal text</td><td>Graphical window</td></tr>
+    <tr><td>Quick actions</td><td>No</td><td>Yes (sidebar buttons)</td></tr>
+    <tr><td>Colour-coded output</td><td>Rich terminal (ANSI)</td><td>Tkinter tags (works everywhere)</td></tr>
+    <tr><td>Stop mid-task</td><td>Ctrl+C</td><td>Stop button</td></tr>
+    <tr><td>Settings</td><td>Env vars / CLI flags</td><td>GUI dialog with Browse</td></tr>
+    <tr><td>Confirmations</td><td>Y/N in terminal</td><td>Popup dialog</td></tr>
+    <tr><td>Scripting / automation</td><td>Better (single-task mode)</td><td>Not suited</td></tr>
+    <tr><td>Casual use</td><td>Fine</td><td>More comfortable</td></tr>
+</table>
+
+<hr style="margin-top:50px; border:none; border-top:1px solid #ddd;">
+<p style="text-align:center; color:#888; font-size:13px; margin-top:20px;">
+    Gemma Agent v0.1.0 — Powered by Google Gemma (local) via OpenAI-compatible API<br>
+    All processing runs on your machine. No data leaves your network.
+</p>
+
+</body>
+</html>

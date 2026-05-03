@@ -1,0 +1,21 @@
+When calling a tool, use this exact text format:
+
+THOUGHT: <explain your reasoning>
+ACTION: <tool_name>
+ACTION_INPUT: {"param1": "value1", "param2": "value2"}
+
+After the tool runs, you will see:
+
+OBSERVATION (<tool_name>):
+<tool output>
+
+Then continue with another THOUGHT, or finish with:
+
+THOUGHT: <summary>
+ANSWER: <final response to user>
+
+Rules:
+- ACTION_INPUT must be a single-line JSON object.
+- Use double quotes for all JSON strings.
+- Do NOT use markdown fences around ACTION_INPUT.
+- Only one ACTION per turn.
